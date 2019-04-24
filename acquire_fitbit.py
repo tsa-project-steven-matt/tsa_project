@@ -12,18 +12,8 @@ e = 'fitbit/2018-08-27_through_2018-09-26.csv'
 g = 'fitbit/2018-09-27_through_2018-10-27.csv'
 h = 'fitbit/2018-10-28_through-2018-11-27.csv'
 i = 'fitbit/2018-11-28_through_2018-12-28.csv'
-# file_list = [a,b,c,d,e,g,h,i]
 
-# for letter in file_list:
-#     FILE = letter
-#     with open(FILE) as f:
-#         contents = f.read()
-#     letter = contents.split('\n')
-#     letter = pd.DataFrame(letter)
-
-# for letter in file_list:
-#     letter = letter.iloc[35:67]
-
+# Read each file and split on new lines: 
 FILE = a
 with open(FILE) as f:
     contents = f.read()
@@ -83,16 +73,19 @@ h = h.iloc[36:67]
 i = i.iloc[36:45]
 
 def combine_logs():
+    '''appends the different logs into one dataframe'''
     df = a.append(b).append(c).append(d).append(e).append(g).append(h).append(i)
     df = df.reset_index()
     return df
 
 
 def split_cols(df):
+    '''Separate the data into workable columns'''
     df = df[0].str.split('","', expand=True)
     return df
 
 def rename_cols(df):
+    '''Names columns of the dataframe appropriately based on fitbit csv'''
     df.rename(columns={0: 'date', 
                    1: 'calories_burned', 
                    2: 'steps', 
@@ -107,6 +100,7 @@ def rename_cols(df):
     return df
 
 def get_fitbit():
+    '''compounds functions above into a single function call'''
     df = combine_logs()
     df = split_cols(df)
     df = rename_cols(df)
